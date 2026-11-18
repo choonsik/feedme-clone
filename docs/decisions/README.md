@@ -4,3 +4,4 @@
 
 - [ui-composition](ui-composition.md) — Read when choosing UI components, page composition, visual tokens, or custom interface boundaries.
 - [dependency-versions](dependency-versions.md) — Read when upgrading dependencies, pinning versions, or wondering why TypeScript stays on 6.x.
+- [visual-language](visual-language.md) — Read when styling components, choosing colors for block faces, or adding illustrations or text effects.
