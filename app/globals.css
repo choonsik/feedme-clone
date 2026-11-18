@@ -81,6 +81,32 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* 아이소매트릭 블록 면 색: 위 / 오른쪽 / 아래 */
+  --iso-floor: #e6eafb;
+  --iso-grid: rgba(80, 90, 210, 0.1);
+  --iso-ink: #1d2140;
+  --iso-soft: #5b6390;
+  --iso-top: #ffffff;
+  --iso-right: #d3d9f3;
+  --iso-bottom: #b6bfe8;
+  --iso-inset: #f4f6ff;
+  --iso-edge: #aab3e3;
+  --iso-tx: #aab3e3;
+  --iso-accent-top: #5b5bd6;
+  --iso-accent-right: #4242b3;
+  --iso-accent-bottom: #32328f;
+  --iso-accent-ink: #ffffff;
+  --iso-mint-top: #8fe6cd;
+  --iso-mint-right: #5fc9aa;
+  --iso-mint-bottom: #3ea88a;
+  --iso-warn-top: #ffe6e3;
+  --iso-warn-right: #f4bdb7;
+  --iso-warn-bottom: #e49d96;
+  --iso-warn-ink: #a5251b;
+  --iso-info-top: #e3f4ff;
+  --iso-info-right: #b4d8f2;
+  --iso-info-bottom: #8fbfe3;
 }
 
 .dark {
@@ -115,6 +141,31 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  --iso-floor: #11132a;
+  --iso-grid: rgba(150, 160, 255, 0.09);
+  --iso-ink: #eceeff;
+  --iso-soft: #a0a8dc;
+  --iso-top: #242850;
+  --iso-right: #1a1d3b;
+  --iso-bottom: #10122a;
+  --iso-inset: #0d0f22;
+  --iso-edge: #3a4080;
+  --iso-tx: #4a4ab5;
+  --iso-accent-top: #8f8fff;
+  --iso-accent-right: #6b6be3;
+  --iso-accent-bottom: #4a4ab5;
+  --iso-accent-ink: #10122a;
+  --iso-mint-top: #4fd1b0;
+  --iso-mint-right: #35a58a;
+  --iso-mint-bottom: #247a66;
+  --iso-warn-top: #4a2330;
+  --iso-warn-right: #331822;
+  --iso-warn-bottom: #220f17;
+  --iso-warn-ink: #ffb4ab;
+  --iso-info-top: #20395a;
+  --iso-info-right: #172a44;
+  --iso-info-bottom: #0f1c30;
 }
 
 @layer base {
@@ -123,8 +174,125 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-color: var(--iso-floor);
+    background-image:
+      repeating-linear-gradient(30deg, var(--iso-grid) 0 1px, transparent 1px 44px),
+      repeating-linear-gradient(150deg, var(--iso-grid) 0 1px, transparent 1px 44px);
+    color: var(--iso-ink);
   }
   html {
     @apply font-sans;
   }
+}
+
+/* 아이소매트릭 시각 언어: docs/decisions/visual-language.md */
+@layer components {
+  /* 위쪽 면 + 오른쪽 옆면 + 아래쪽 옆면. 옆면은 30° 기울기로 그린다. */
+  .iso-block {
+    --d: 12px;
+    --ft: var(--iso-top);
+    --fr: var(--iso-right);
+    --fb: var(--iso-bottom);
+    position: relative;
+    border-radius: 0;
+    background: var(--ft);
+    box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--fb) 55%, transparent);
+    color: var(--iso-ink);
+  }
+  .iso-block::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: var(--d);
+    height: 100%;
+    background: var(--fr);
+    transform-origin: 0 0;
+    transform: skewY(30deg);
+    pointer-events: none;
+  }
+  .iso-block::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: calc(var(--d) * 0.577);
+    background: var(--fb);
+    transform-origin: 0 0;
+    transform: skewX(60deg);
+    pointer-events: none;
+  }
+  .iso-accent {
+    --ft: var(--iso-accent-top);
+    --fr: var(--iso-accent-right);
+    --fb: var(--iso-accent-bottom);
+    color: var(--iso-accent-ink);
+  }
+  .iso-mint {
+    --ft: var(--iso-mint-top);
+    --fr: var(--iso-mint-right);
+    --fb: var(--iso-mint-bottom);
+  }
+  .iso-info {
+    --ft: var(--iso-info-top);
+    --fr: var(--iso-info-right);
+    --fb: var(--iso-info-bottom);
+  }
+  .iso-warn {
+    --ft: var(--iso-warn-top);
+    --fr: var(--iso-warn-right);
+    --fb: var(--iso-warn-bottom);
+    color: var(--iso-warn-ink);
+  }
+  .iso-chip[aria-pressed="true"] {
+    --ft: var(--iso-mint-top);
+    --fr: var(--iso-mint-right);
+    --fb: var(--iso-mint-bottom);
+    --d: 2px;
+    color: #0e2a22;
+    transform: translate(2px, 1px);
+  }
+  /* 입력창은 블록이 아니라 안쪽으로 파인 면. 글자 그림자는 여기에만 쓴다. */
+  .iso-input {
+    border: 2px solid var(--iso-edge);
+    border-radius: 0;
+    background: var(--iso-inset);
+    color: var(--iso-ink);
+    box-shadow: inset 3px 3px 0 color-mix(in srgb, var(--iso-right) 70%, transparent);
+    text-shadow: 1px 0.58px 0 var(--iso-tx), 2px 1.15px 0 var(--iso-tx);
+  }
+  .iso-input::placeholder {
+    color: var(--iso-soft);
+    opacity: 0.8;
+    text-shadow: none;
+  }
+  .iso-input[aria-invalid="true"] {
+    border-color: var(--iso-warn-ink);
+  }
+  .iso-hero .t { fill: var(--ft); }
+  .iso-hero .l { fill: var(--fb); }
+  .iso-hero .r { fill: var(--fr); }
+  .iso-hero .ln { stroke: var(--iso-soft); stroke-width: 3; stroke-linecap: round; opacity: 0.75; }
+  .iso-hero .ar { stroke: var(--iso-soft); stroke-width: 2.5; stroke-dasharray: 5 5; stroke-linecap: round; fill: none; }
+  .iso-hero .ah { fill: var(--iso-soft); }
+  .iso-hero .on-mint { stroke: #0e2a22; }
+
+  /* 변환된 Markdown 본문 */
+  .md { font-size: 15px; line-height: 1.75; overflow-wrap: anywhere; }
+  .md > :first-child { margin-top: 0; }
+  .md h3 { font-size: 17px; font-weight: 700; margin: 24px 0 8px; }
+  .md h4, .md h5, .md h6 { font-weight: 700; margin: 18px 0 6px; }
+  .md p { margin: 0 0 14px; }
+  .md ul { margin: 0 0 14px; padding-left: 22px; list-style: disc; }
+  .md ol { margin: 0 0 14px; padding-left: 22px; list-style: decimal; }
+  .md blockquote { margin: 0 0 14px; padding: 6px 0 6px 14px; border-left: 4px solid var(--iso-mint-right); color: var(--iso-soft); }
+  .md code { font-family: var(--font-geist-mono), ui-monospace, monospace; font-size: 13px; background: var(--iso-inset); padding: 2px 5px; border: 1px solid var(--iso-edge); }
+  .md pre { background: var(--iso-inset); padding: 12px 14px; border: 2px solid var(--iso-edge); overflow-x: auto; margin: 0 0 14px; }
+  .md pre code { background: none; padding: 0; border: 0; }
+  .md a { color: var(--iso-accent-top); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  .md img { max-width: 100%; height: auto; margin: 0 0 14px; }
+  .md table { border-collapse: collapse; margin: 0 0 14px; display: block; overflow-x: auto; }
+  .md th, .md td { border: 1px solid var(--iso-edge); padding: 6px 10px; }
+  .md hr { border: 0; border-top: 2px dashed var(--iso-edge); margin: 18px 0; }
 }
