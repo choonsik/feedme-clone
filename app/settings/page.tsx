@@ -1,7 +1,9 @@
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 import { LogoutButton } from '@/components/logout-button'
 import { ProfileForm } from '@/components/profile-form'
+import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { createClient } from '@/lib/supabase/server'
 
@@ -30,7 +32,16 @@ export default async function SettingsPage() {
           </CardHeader>
           <CardContent className="flex flex-col gap-6">
             <ProfileForm userId={claims.sub} displayName={profile?.display_name ?? ''} />
-            <LogoutButton />
+            <div className="flex gap-2">
+              <Link
+                href="/"
+                data-component="Button"
+                className={buttonVariants({ variant: "outline" })}
+              >
+                홈으로
+              </Link>
+              <LogoutButton />
+            </div>
           </CardContent>
         </Card>
       </div>
