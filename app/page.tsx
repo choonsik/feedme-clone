@@ -1,8 +1,8 @@
-import Link from "next/link";
+import { Suspense } from "react";
 
+import { AuthNav } from "@/components/auth-nav";
 import { Converter } from "@/components/converter/converter";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { buttonVariants } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -13,16 +13,9 @@ export default function Home() {
           <small className="text-[13px] font-medium text-[var(--iso-soft)]">LLM에 바로 넘기기</small>
         </h1>
         <nav className="flex items-center gap-2">
-          <Link
-            href="/auth/login"
-            data-component="Button"
-            className={buttonVariants({ variant: "outline" })}
-          >
-            로그인
-          </Link>
-          <Link href="/auth/sign-up" data-component="Button" className={buttonVariants()}>
-            가입
-          </Link>
+          <Suspense fallback={null}>
+            <AuthNav />
+          </Suspense>
           <ThemeToggle />
         </nav>
       </header>
