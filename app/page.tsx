@@ -1,5 +1,8 @@
+import Link from "next/link";
+
 import { Converter } from "@/components/converter/converter";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { buttonVariants } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -9,7 +12,19 @@ export default function Home() {
           URL → Markdown
           <small className="text-[13px] font-medium text-[var(--iso-soft)]">LLM에 바로 넘기기</small>
         </h1>
-        <ThemeToggle />
+        <nav className="flex items-center gap-2">
+          <Link
+            href="/auth/login"
+            data-component="Button"
+            className={buttonVariants({ variant: "outline" })}
+          >
+            로그인
+          </Link>
+          <Link href="/auth/sign-up" data-component="Button" className={buttonVariants()}>
+            가입
+          </Link>
+          <ThemeToggle />
+        </nav>
       </header>
       <Converter />
     </main>
